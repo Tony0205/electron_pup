@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>My first Electron app</title>
+  </head>
+  <body>
+    <h1>Naver Login</h1>
+    <form id="comment-form">
+      <input type="text" id="user_id" placeholder="ID" />
+      <input type="password" id="user_pwd" placeholder="Password" />
+      <input type="button" value="로그인" onclick="requestLogin();" />
+    </form>
+    <ul id="comments"></ul>
+    
+    
+    
+    <script type="text/javascript">
+      const {ipcRenderer} = require('electron');
+
+      function requestLogin() {
+
+        let login_info = {}
+        let user_id = document.getElementById('user_id').value;
+        let user_pwd = document.getElementById('user_pwd').value;
+
+        if (user_id == '' || user_pwd == '') {
+          alert('아이디 또는 패스워드는 필수입니다.');
+          return;
+        }
+
+        if (confirm("로그인을 시작하시겠습니까?")) {
+          login_info["user_id"] = user_id;
+          login_info["user_pwd"] = user_pwd;
+
+          ipcRenderer.send("REPLY_TEXT", login_info);
+        }
+
+      }
+    </script>
+
+
+  </body>
+</html>
