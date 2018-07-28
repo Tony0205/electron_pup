@@ -2,38 +2,75 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>My first Electron app</title>
+    <title>Ticket</title>
   </head>
   <body>
-    <h1>Naver Login</h1>
+    <h1>티켓 예매</h1>
     <form id="comment-form">
+      <select name="vendor" id="vendor">
+        <option value="melon" selected>멜론</option>
+        <option value="yes24">예스24</option>
+        <option value="interpark">인터파크</option>
+      </select>
+      <br>
+      <br>  
+      <input type="text" id="concert_name" placeholder="공연 이름(검색어)" style="width:350px;"/>
+      <br>
+      <br>
       <input type="text" id="user_id" placeholder="ID" />
       <input type="password" id="user_pwd" placeholder="Password" />
-      <input type="button" value="로그인" onclick="requestLogin();" />
+      <br>
+      <br>
+      <input type="text" id="reservationDate" value="" placeholder="예매 날짜(공연 날짜)">
+      <input type="text" id="reservationTime" value="" placeholder="예매 시간(공연 시간)">
+      <br>
+      <br>
+      <select name="seat_area" id="seat_area">
+        <option value="stand_a" selected>스탠딩 A</option>
+        <option value="stand_b">스탠딩 B</option>
+        <option value="stand_c">스탠딩 C</option>
+      </select>
+      <br>
+      <br>
+      <input type="button" value="예매 시작" onclick="ticketReservation();"/>
     </form>
     <ul id="comments"></ul>
     
     
-    
     <script type="text/javascript">
       const {ipcRenderer} = require('electron');
+      const $ = require('jquery');
 
-      function requestLogin() {
-
-        let login_info = {}
-        let user_id = document.getElementById('user_id').value;
+      function ticketReservation() {
+        let payload = {};
+        let login_info = {};
+        let user_id = document.getElementById('user_id').value; // jquery 붙이기 이전 코드.
         let user_pwd = document.getElementById('user_pwd').value;
+        let vendor = $('#vendor').val();
+        let concert_name = $('#concert_name').val();
+        let reservationDate = $('#reservationDate').val();
+        let reservationTime = $('#reservationTime').val();
+        let seat_area = $('#seat_area').val();
 
         if (user_id == '' || user_pwd == '') {
           alert('아이디 또는 패스워드는 필수입니다.');
           return;
         }
 
-        if (confirm("로그인을 시작하시겠습니까?")) {
+        if (confirm("예매를 시작하시겠습니까?")) {
           login_info["user_id"] = user_id;
           login_info["user_pwd"] = user_pwd;
-
-          ipcRenderer.send("REPLY_TEXT", login_info);
+          
+          payload = {
+            "account": login_info,
+            "vendor": vendor,
+            "concert_name": concert_name,
+            "reservationDate": reservationDate,
+            "reservationTime": reservationTime,
+            "seat_area": seat_area
+          }
+          
+          ipcRenderer.send("REPLY_TEXT", payload);
         }
 
       }
