@@ -8,7 +8,8 @@
     <h1>티켓 예매</h1>
     <form id="comment-form">
       <select name="vendor" id="vendor">
-        <option value="melon" selected>멜론</option>
+        <option value="">사이트 선택</option>
+        <option value="melon" >멜론</option>
         <option value="yes24">예스24</option>
         <option value="interpark">인터파크</option>
       </select>
@@ -46,7 +47,7 @@
         let login_info = {};
         let user_id = document.getElementById('user_id').value; // jquery 붙이기 이전 코드.
         let user_pwd = document.getElementById('user_pwd').value;
-        let vendor = $('#vendor').val();
+        let vendor = $('#vendor option:selected').val();
         let concert_name = $('#concert_name').val();
         let reservationDate = $('#reservationDate').val();
         let reservationTime = $('#reservationTime').val();
@@ -54,6 +55,26 @@
 
         if (user_id == '' || user_pwd == '') {
           alert('아이디 또는 패스워드는 필수입니다.');
+          return;
+        }
+
+        if( vendor == '') {
+          alert('사이트를 선택해주세요.');
+          return;
+        }
+
+        if( concert_name == '') {
+          alert('공연이름을 선택해주세요.');
+          return;
+        }
+
+        if( reservationDate == '') {
+          alert('예매날짜를 선택해주세요.');
+          return;
+        }
+        
+        if( reservationTime == '') {
+          alert('예매시간을 선택해주세요.');
           return;
         }
 

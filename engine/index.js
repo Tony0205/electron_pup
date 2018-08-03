@@ -19,7 +19,8 @@ module.exports = class EngineList {
         break;
       
       case "interpark":
-        
+        let interpark = new interpark(payload);
+        interpark.reservationTicket();
         break;
     
       default:
